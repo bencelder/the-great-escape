@@ -59,7 +59,7 @@ function update(){
     }
 
     ctx.font="20px Georgia";
-    ctx.fillText(fps, c.width - 30, c.height);
+    ctx.fillText(fps, c.width - 30, c.height - 5);
     frames++;
 }
 
