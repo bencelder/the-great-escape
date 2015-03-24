@@ -17,7 +17,7 @@ function initialize(){
     timer = setInterval(function(){update()}, 1);
 
     var audio = new Audio("Dreamscape.mp3");
-    //audio.play();
+    audio.play();
 
     starttime = Date.now();
     frames = 0;
