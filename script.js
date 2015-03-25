@@ -19,8 +19,15 @@ function initialize(){
     var audio = new Audio("Dreamscape.mp3");
     audio.play();
 
+
+    clouds = new Array();
+    clouds[0] = new Point(10, 10);
+    clouds[1] = new Point(20, 20);
+
     starttime = Date.now();
     frames = 0;
+
+    fps = 0;
 
 }
 
@@ -42,9 +49,9 @@ function update(){
     Xpos = Xpos + Xvel;
     Ypos = Ypos + Yvel;
 
-    ctx.clearRect(0, 0, c.width, c.height);
-    drawBox(Xpos, Ypos);
     Yvel = Yvel + 0.005;
+
+    draw()
 
     // *** compute fps *** //
     if (frames % 10 == 0){
@@ -57,10 +64,34 @@ function update(){
         starttime = Date.now();
         frames = 0;
     }
+    frames++;
+}
+
+function Point (x, y){
+    this.x = x;
+    this.y = y;
+}
+
+// needs work
+function Rect(bottomleft, topright){
+    this.bottomleft = bottomleft;
+    this.topright = topright;
+}
+
+function collideRect(r1, r2){
+    return false;
+}
+
+function draw(){
+    ctx.clearRect(0, 0, c.width, c.height);
+    drawBox(Xpos, Ypos);
+
+    for (i = 0; i < clouds.length; i++){
+        drawBox(clouds[i].x, clouds[i].y);
+    }
 
     ctx.font="20px Georgia";
-    ctx.fillText(fps, c.width - 30, c.height - 5);
-    frames++;
+    ctx.fillText(fps, c.width - 40, c.height - 5);
 }
 
 function keyDown(e){
