@@ -57,8 +57,10 @@ function drawPlayer(x, y){
     var scale = 0.5;
 
     ctx.save();
+    if (Xvel > 0){
+        ctx.scale(-1, 1);
+    }
     ctx.translate(x + fish.width/2*scale, y + fish.height/2*scale);
-    //ctx.scale(-1, 1);
     //ctx.rotate(0.5);
     ctx.drawImage(fish, 0, 0, fish.width*scale, fish.height*scale);
     ctx.restore();
@@ -70,7 +72,7 @@ function update(){
     lastframe = now;
 
     if (Xpos < 0) Xvel = Math.abs(Xvel);
-    if (Ypos > c.height - size) Yvel = -Math.abs(Yvel);
+    if (Ypos > c.height - 100) Yvel = -Math.abs(Yvel);
     //Yvel = Math.max(-5, Yvel);
     /*
     Xpos = Math.max(0, Xpos);
@@ -81,6 +83,10 @@ function update(){
 
     Xpos = Xpos + Xvel*dt;
     Ypos = Ypos + Yvel*dt;
+
+    if (Xpos < 0) Xpos = 0;
+    if (Xpos > c.width - size) Xpos = c.width - size;
+
 
     Yvel = Yvel + 50*dt;
 
