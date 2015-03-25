@@ -12,9 +12,11 @@ function initialize(){
     move_vel = 3;
 
 
+    lastframe = Date.now();
     var timer;
     clearInterval(timer);
     timer = setInterval(function(){update()}, 1);
+
 
     var audio = new Audio("Dreamscape.mp3");
     audio.play();
@@ -29,6 +31,18 @@ function initialize(){
 
     fps = 0;
 
+    // Load images
+    imageObj = new Image();
+
+    images = new Array();
+    images[0] = "clouds.gif";
+
+    n_images = 1;
+
+    for (var i = 0; i < n_images; i++){
+        imageObj.src=images[i]
+    }
+
 }
 
 function drawBox(x, y){
@@ -36,9 +50,28 @@ function drawBox(x, y){
     ctx.fillRect(x, y, size, size);
 }
 
+function drawPlayer(x, y){
+    //drawBox(x, y);
+    fish = new Image();
+    fish.src = "fishie.png";
+    var scale = 0.5;
+
+    ctx.save();
+    ctx.translate(x + fish.width/2*scale, y + fish.height/2*scale);
+    //ctx.scale(-1, 1);
+    //ctx.rotate(0.5);
+    ctx.drawImage(fish, 0, 0, fish.width*scale, fish.height*scale);
+    ctx.restore();
+}
+
 function update(){
-    if (Ypos > c.height - size) Yvel = -Yvel;
-    Yvel = Math.max(-5, Yvel);
+    now = Date.now()
+    dt = (now - lastframe)/1000;
+    lastframe = now;
+
+    if (Xpos < 0) Xvel = Math.abs(Xvel);
+    if (Ypos > c.height - size) Yvel = -Math.abs(Yvel);
+    //Yvel = Math.max(-5, Yvel);
     /*
     Xpos = Math.max(0, Xpos);
     Ypos = Math.max(0, Ypos);
@@ -46,10 +79,10 @@ function update(){
     Ypos = Math.min(c.height - size, Ypos);
     */
 
-    Xpos = Xpos + Xvel;
-    Ypos = Ypos + Yvel;
+    Xpos = Xpos + Xvel*dt;
+    Ypos = Ypos + Yvel*dt;
 
-    Yvel = Yvel + 0.005;
+    Yvel = Yvel + 50*dt;
 
     draw()
 
@@ -83,8 +116,11 @@ function collideRect(r1, r2){
 }
 
 function draw(){
-    ctx.clearRect(0, 0, c.width, c.height);
-    drawBox(Xpos, Ypos);
+    //ctx.clearRect(0, 0, c.width, c.height);
+    clouds = new Image();
+    clouds.src = "clouds.gif";
+    ctx.drawImage(clouds,0,0);
+    drawPlayer(Xpos, Ypos);
 
     for (i = 0; i < clouds.length; i++){
         drawBox(clouds[i].x, clouds[i].y);
